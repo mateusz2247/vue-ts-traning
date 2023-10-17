@@ -1,27 +1,43 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+	<div>
+		<h1>My todo</h1>
+		<h3>{{ completedAll }}</h3>
+	</div>
+	<ItemList :Items="DataItemsList" @changeItem="CompletedItem"></ItemList>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+<script setup lang="ts">
+import ItemList from "./components/Items/Items-component.vue";
+import { reactive, computed } from "vue";
+import type { ItemInterface } from "./models/Items/Item.interface";
+const DataItemsList: ItemInterface[] = reactive([
+	{
+		id: 1,
+		name: "coffe",
+		completed: false,
+	},
+	{
+		id: 2,
+		name: "books",
+		completed: false,
+	},
+]);
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+const CompletedItem = (id: number) => {
+	alert("id" + id);
+};
+
+const completedAll = computed(() => {
+	let all = DataItemsList.length;
+	let countCompleted = 0;
+
+	DataItemsList.forEach((element) => {
+		if (element.completed) {
+			countCompleted++;
+		}
+	});
+	return countCompleted == all ? "All task is completed" : "No";
 });
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
